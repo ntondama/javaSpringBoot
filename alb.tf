@@ -49,9 +49,15 @@ resource "aws_lb_listener_rule" "server1" {
   listener_arn = aws_lb_listener.http.arn
   priority     = 100
 
-  condition {  # Correct block name (not "conditions")
+  condition {  # ✅ Correct: condition (not "conditions")
+    host_header {
+      values = ["server1.dvstech.com"]  # Adjust domain as needed
+    }
+  }
+
+  condition {  # ✅ Required: At least one condition is needed
     path_pattern {
-      values = ["/server1*"]
+      values = ["/server1*"]  # Ensures path-based routing
     }
   }
 
