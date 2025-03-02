@@ -46,16 +46,17 @@ resource "aws_lb_listener" "listener" {
 
 # ✅ Path-based Routing Rules
 resource "aws_lb_listener_rule" "server1" {
-  listener_arn = aws_lb_listener.listener.arn
-  priority     = 10
+  listener_arn = aws_lb_listener.http.arn
+  priority     = 100
 
-  conditions {
-    field  = "path-pattern"
-    values = ["/server1"]
+  condition {  # Correct block name (not "conditions")
+    path_pattern {
+      values = ["/server1*"]
+    }
   }
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.tg[0].arn
+    target_group_arn = aws_lb_target_group.server1.arn
   }
 }
